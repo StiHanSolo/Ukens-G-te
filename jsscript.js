@@ -8,11 +8,26 @@ function promptUserName() {
     document.getElementById("userNameDisplay").innerText = `Welcome, ${userName}`;
 }
 
+// Riddle data for the week
+const riddles = [
+    { day: "Mandag", text: "Hva har hender, men kan ikke klappe?", answer: "klokke" },
+    { day: "Tirsdag", text: "Hva blir våtere jo mer det tørker?", answer: "håndkle" },
+    { day: "Onsdag", text: "Hva har mange tenner men biter ikke?", answer: "kam" },
+    { day: "Torsdag", text: "Hva går opp og ned, men beveger seg aldri?", answer: "trapp" }
+];
+
+// Display the riddle of the day
+function startGuidedTour() {
+    const today = new Date().getDay();
+    const riddle = riddles[today - 1];  // Adjust for correct day index
+    document.getElementById("riddleContainer").innerText = `${riddle.day}'s gåte: ${riddle.text}`;
+}
+
 // Initialize Leaderboard with Local Storage
 function updateLeaderboard(score) {
     let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
     leaderboard.push({ name: localStorage.getItem("userName"), score: score });
-    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 10);  // Top 10 scores
+    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 10);
     localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
     displayLeaderboard(leaderboard);
 }
@@ -27,62 +42,22 @@ function displayLeaderboard(leaderboard) {
     });
 }
 
-// Start Puzzle Timer and Scoring
-let timer;
-let timeElapsed = 0;
-
-function startPuzzleTimer() {
-    timeElapsed = 0;
-    timer = setInterval(() => {
-        timeElapsed++;
-        document.getElementById("timerDisplay").innerText = `Time: ${timeElapsed}s`;
-    }, 1000);
-}
-
-function stopPuzzleTimer() {
-    clearInterval(timer);
-    const score = calculateScore(timeElapsed);
-    updateLeaderboard(score);
-}
-
-function calculateScore(time) {
-    return Math.max(100 - time, 0);  // Higher score for faster completion
-}
-
-// Achievements Functionality
-function unlockAchievement(achievement) {
-    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-    if (!achievements.includes(achievement)) {
-        achievements.push(achievement);
-        localStorage.setItem("achievements", JSON.stringify(achievements));
-        displayAchievement(achievement);
-    }
-}
-
-function displayAchievement(achievement) {
-    const achievementList = document.getElementById("achievementList");
-    const listItem = document.createElement("li");
-    listItem.innerText = achievement;
-    listItem.classList.add("reveal-hint");  // Apply reveal animation
-    achievementList.appendChild(listItem);
-}
-
-// Theme Management
+// Apply Theme
 function applyTheme(theme) {
     document.body.className = theme;
     localStorage.setItem("theme", theme);
 }
 
-// Check for saved theme on load
+// Run on page load
 window.onload = function() {
     const savedTheme = localStorage.getItem("theme") || "theme-day";
     applyTheme(savedTheme);
     document.getElementById("themeSelector").value = savedTheme;
     promptUserName();
-    updateLeaderboard(0);  // Example initial score
+    updateLeaderboard(0);
 };
 
-// Sound Effects and Background Music
+// Sound Effects
 function playSound(soundId) {
     document.getElementById(soundId).play();
 }
