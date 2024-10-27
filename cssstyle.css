@@ -54,14 +54,20 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Hint Countdown */
+/* Hint Countdown and Progress */
 #hintTimer {
     font-size: 1.2em;
     color: #ff5722;
 }
 
+#hintProgress {
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+}
+
 /* Scoreboard Enhancements */
-#scoreboard {
+#scoreboard, #achievements {
     margin-top: 10px;
     padding: 15px;
     background-color: #e0e0e0;

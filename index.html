@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ukens Gåte - Styrk Problemløsningsferdigheter</title>
+    <title>Ukens Gåte - Spill for Ansatte</title>
     <link rel="stylesheet" href="cssstyle.css">
 </head>
 <body>
     <header>
-        <h1>Ukens Gåte</h1>
+        <h1>Ukens Gåte - En Liten Sol i Hverdagen</h1>
         <nav>
             <ul>
-                <li><a href="#hoved" aria-label="Hovedside">Hovedside</a></li>
-                <li><a href="#hint" aria-label="Hint">Hint</a></li>
-                <li><a href="#poengtavle" aria-label="Poengtavle">Poengtavle</a></li>
+                <li><a href="#hoved">Hovedside</a></li>
+                <li><a href="#hint">Hint</a></li>
+                <li><a href="#poengtavle">Poengtavle</a></li>
             </ul>
         </nav>
     </header>
@@ -21,14 +21,15 @@
     <main id="hoved">
         <section id="oppstart">
             <h2>Velkommen til Ukens Gåte!</h2>
-            <p>Introduser deg for ukens gåte og teamarbeid! Start her.</p>
-            <button onclick="startGuidedTour()" aria-label="Start veiledning">Start Veiledning</button>
+            <p>Bli med og løs dagens gåte! Start når du er klar.</p>
+            <button onclick="startGuidedTour()">Start Spill</button>
         </section>
         
         <section id="kalender">
             <h2>Kalender for Ukens Gåte</h2>
-            <p>Hver mandag finner du en ny utfordring her!</p>
+            <p>Hver dag finner du en ny utfordring her!</p>
             <div id="hintTimer"></div>
+            <progress id="hintProgress" max="100" value="0"></progress>
         </section>
         
         <section id="hint">
@@ -41,8 +42,14 @@
         
         <section id="poengtavle">
             <h2>Teampoengtavle</h2>
-            <p>Følg med på ukens toppliste!</p>
+            <p>Følg med på topplistene og oppnå nye prestasjoner!</p>
             <div id="scoreboard">Oppdateres...</div>
+            <div id="achievements">
+                <h3>Prestasjoner</h3>
+                <ul id="achievementList">
+                    <!-- Prestasjoner vil bli lagt til her dynamisk -->
+                </ul>
+            </div>
         </section>
     </main>
 

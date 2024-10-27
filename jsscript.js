@@ -1,10 +1,9 @@
 // Start veiledning - Introduksjon
 function startGuidedTour() {
     alert("Velkommen til Ukens Gåte! La oss starte veiledningen.");
-    // Her kan du implementere en interaktiv veiledning hvis ønskelig
 }
 
-// Hint Timer - Oppdatere Hint på spesifikke tidspunkter
+// Hint Timer med Progress Bar
 function startHintTimer() {
     const hintTimes = [
         { day: "Mandag", time: "10:00", elementId: "hint1" },
@@ -23,6 +22,7 @@ function startHintTimer() {
         if (now < hintTime) {
             const timeRemaining = Math.floor((hintTime - now) / 1000);
             displayCountdown(timeRemaining, hint.elementId);
+            updateProgressBar(timeRemaining, hintTime, hint.elementId);
         } else {
             document.getElementById(hint.elementId).innerText = `${hint.day} Hint: Tilgjengelig nå!`;
         }
@@ -45,11 +45,20 @@ function displayCountdown(seconds, elementId) {
     }, 1000);
 }
 
-// Oppdatere Poengtavle - Dynamisk poengtavle for team
+function updateProgressBar(seconds, hintTime, elementId) {
+    const progressBar = document.getElementById("hintProgress");
+    const totalSeconds = Math.floor((hintTime - new Date()) / 1000);
+    const updateInterval = setInterval(() => {
+        const progress = 100 - ((seconds / totalSeconds) * 100);
+        progressBar.value = progress;
+        if (progress >= 100) clearInterval(updateInterval);
+    }, 1000);
+}
+
+// Oppdatere Poengtavle og Prestasjoner
 function updateScoreboard(scores) {
     const scoreboard = document.getElementById("scoreboard");
-    scoreboard.innerHTML = ""; // Tømmer tidligere data
-
+    scoreboard.innerHTML = "";
     scores.forEach((score, index) => {
         const scoreEntry = document.createElement("p");
         scoreEntry.innerText = `${index + 1}. ${score.name}: ${score.points} poeng`;
@@ -57,15 +66,27 @@ function updateScoreboard(scores) {
     });
 }
 
-// Eksempel data for poengtavlen
+function updateAchievements(achievements) {
+    const achievementList = document.getElementById("achievementList");
+    achievementList.innerHTML = "";
+    achievements.forEach(achievement => {
+        const li = document.createElement("li");
+        li.innerText = achievement;
+        achievementList.appendChild(li);
+    });
+}
+
+// Eksempeldata
 const exampleScores = [
     { name: "Team Alfa", points: 150 },
     { name: "Team Beta", points: 120 },
     { name: "Team Gamma", points: 100 }
 ];
+const exampleAchievements = ["Første gåte løst!", "3 dager på rad!", "100 poeng oppnådd!"];
 
-// Start funksjoner når siden lastes inn
+// Start funksjoner ved last
 window.onload = function() {
     startHintTimer();
     updateScoreboard(exampleScores);
+    updateAchievements(exampleAchievements);
 };
