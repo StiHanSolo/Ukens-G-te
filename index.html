@@ -9,6 +9,7 @@
 <body>
     <header>
         <h1>Ukens Gåte - En Liten Sol i Hverdagen</h1>
+        <p id="userNameDisplay"></p>  <!-- Display User Name Here -->
         <nav>
             <ul>
                 <li><a href="#hoved">Hovedside</a></li>
@@ -16,6 +17,10 @@
                 <li><a href="#poengtavle">Poengtavle</a></li>
             </ul>
         </nav>
+        <select id="themeSelector" onchange="applyTheme(this.value)">
+            <option value="theme-day">Day</option>
+            <option value="theme-night">Night</option>
+        </select>
     </header>
     
     <main id="hoved">
@@ -57,6 +62,12 @@
         <p>© Ukens Gåte</p>
     </footer>
     
+    <div id="timerDisplay">Time: 0s</div>
+    <audio id="hintSound" src="hint.mp3"></audio>
+    <audio id="achievementSound" src="achievement.mp3"></audio>
+    <audio id="bgMusic" src="background.mp3" loop></audio>
+    <button onclick="toggleSound()">Toggle Sound</button>
+
     <script src="jsscript.js"></script>
 </body>
 </html>

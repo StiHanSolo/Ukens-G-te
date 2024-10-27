@@ -1,92 +1,97 @@
-// Start veiledning - Introduksjon
-function startGuidedTour() {
-    alert("Velkommen til Ukens Gåte! La oss starte veiledningen.");
+// Prompt for User Name and Store in Local Storage
+function promptUserName() {
+    let userName = localStorage.getItem("userName");
+    if (!userName) {
+        userName = prompt("Enter your name:");
+        localStorage.setItem("userName", userName);
+    }
+    document.getElementById("userNameDisplay").innerText = `Welcome, ${userName}`;
 }
 
-// Hint Timer med Progress Bar
-function startHintTimer() {
-    const hintTimes = [
-        { day: "Mandag", time: "10:00", elementId: "hint1" },
-        { day: "Tirsdag", time: "10:00", elementId: "hint2" },
-        { day: "Onsdag", time: "10:00", elementId: "hint3" },
-        { day: "Torsdag", time: "10:00", elementId: "hint4" },
-    ];
-
-    hintTimes.forEach(hint => {
-        const now = new Date();
-        const hintTime = new Date();
-        const [hours, minutes] = hint.time.split(":");
-        hintTime.setHours(hours);
-        hintTime.setMinutes(minutes);
-
-        if (now < hintTime) {
-            const timeRemaining = Math.floor((hintTime - now) / 1000);
-            displayCountdown(timeRemaining, hint.elementId);
-            updateProgressBar(timeRemaining, hintTime, hint.elementId);
-        } else {
-            document.getElementById(hint.elementId).innerText = `${hint.day} Hint: Tilgjengelig nå!`;
-        }
-    });
+// Initialize Leaderboard with Local Storage
+function updateLeaderboard(score) {
+    let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    leaderboard.push({ name: localStorage.getItem("userName"), score: score });
+    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 10);  // Top 10 scores
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+    displayLeaderboard(leaderboard);
 }
 
-function displayCountdown(seconds, elementId) {
-    const countdownElement = document.getElementById(elementId);
-    const countdownInterval = setInterval(() => {
-        if (seconds <= 0) {
-            countdownElement.innerText = "Tilgjengelig nå!";
-            clearInterval(countdownInterval);
-        } else {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const remainingSeconds = seconds % 60;
-            countdownElement.innerText = `Tilgjengelig om ${hours}t ${minutes}m ${remainingSeconds}s`;
-            seconds--;
-        }
-    }, 1000);
-}
-
-function updateProgressBar(seconds, hintTime, elementId) {
-    const progressBar = document.getElementById("hintProgress");
-    const totalSeconds = Math.floor((hintTime - new Date()) / 1000);
-    const updateInterval = setInterval(() => {
-        const progress = 100 - ((seconds / totalSeconds) * 100);
-        progressBar.value = progress;
-        if (progress >= 100) clearInterval(updateInterval);
-    }, 1000);
-}
-
-// Oppdatere Poengtavle og Prestasjoner
-function updateScoreboard(scores) {
+function displayLeaderboard(leaderboard) {
     const scoreboard = document.getElementById("scoreboard");
     scoreboard.innerHTML = "";
-    scores.forEach((score, index) => {
-        const scoreEntry = document.createElement("p");
-        scoreEntry.innerText = `${index + 1}. ${score.name}: ${score.points} poeng`;
-        scoreboard.appendChild(scoreEntry);
+    leaderboard.forEach((entry, index) => {
+        const listItem = document.createElement("p");
+        listItem.innerText = `${index + 1}. ${entry.name}: ${entry.score} points`;
+        scoreboard.appendChild(listItem);
     });
 }
 
-function updateAchievements(achievements) {
+// Start Puzzle Timer and Scoring
+let timer;
+let timeElapsed = 0;
+
+function startPuzzleTimer() {
+    timeElapsed = 0;
+    timer = setInterval(() => {
+        timeElapsed++;
+        document.getElementById("timerDisplay").innerText = `Time: ${timeElapsed}s`;
+    }, 1000);
+}
+
+function stopPuzzleTimer() {
+    clearInterval(timer);
+    const score = calculateScore(timeElapsed);
+    updateLeaderboard(score);
+}
+
+function calculateScore(time) {
+    return Math.max(100 - time, 0);  // Higher score for faster completion
+}
+
+// Achievements Functionality
+function unlockAchievement(achievement) {
+    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
+    if (!achievements.includes(achievement)) {
+        achievements.push(achievement);
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+        displayAchievement(achievement);
+    }
+}
+
+function displayAchievement(achievement) {
     const achievementList = document.getElementById("achievementList");
-    achievementList.innerHTML = "";
-    achievements.forEach(achievement => {
-        const li = document.createElement("li");
-        li.innerText = achievement;
-        achievementList.appendChild(li);
-    });
+    const listItem = document.createElement("li");
+    listItem.innerText = achievement;
+    listItem.classList.add("reveal-hint");  // Apply reveal animation
+    achievementList.appendChild(listItem);
 }
 
-// Eksempeldata
-const exampleScores = [
-    { name: "Team Alfa", points: 150 },
-    { name: "Team Beta", points: 120 },
-    { name: "Team Gamma", points: 100 }
-];
-const exampleAchievements = ["Første gåte løst!", "3 dager på rad!", "100 poeng oppnådd!"];
+// Theme Management
+function applyTheme(theme) {
+    document.body.className = theme;
+    localStorage.setItem("theme", theme);
+}
 
-// Start funksjoner ved last
+// Check for saved theme on load
 window.onload = function() {
-    startHintTimer();
-    updateScoreboard(exampleScores);
-    updateAchievements(exampleAchievements);
+    const savedTheme = localStorage.getItem("theme") || "theme-day";
+    applyTheme(savedTheme);
+    document.getElementById("themeSelector").value = savedTheme;
+    promptUserName();
+    updateLeaderboard(0);  // Example initial score
 };
+
+// Sound Effects and Background Music
+function playSound(soundId) {
+    document.getElementById(soundId).play();
+}
+
+function toggleSound() {
+    const bgMusic = document.getElementById("bgMusic");
+    if (bgMusic.paused) {
+        bgMusic.play();
+    } else {
+        bgMusic.pause();
+    }
+}

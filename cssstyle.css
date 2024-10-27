@@ -5,6 +5,15 @@ body {
     color: #333;
 }
 
+/* Theme Options */
+body.theme-day {
+    background: linear-gradient(to right, #f0f4c3, #ffffff);
+}
+
+body.theme-night {
+    background: linear-gradient(to right, #303f9f, #212121);
+}
+
 /* Header Styling */
 header {
     background-color: #004080;
@@ -42,7 +51,8 @@ button {
 
 button:hover {
     background-color: #005f99;
-    transform: scale(1.05);
+    transform: scale(1.1);  /* Larger effect */
+    box-shadow: 0px 0px 8px rgba(0, 150, 255, 0.6);
 }
 
 /* Section Styling */
@@ -52,6 +62,7 @@ section {
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease; /* Smooth transition */
 }
 
 /* Hint Countdown and Progress */
@@ -72,6 +83,16 @@ section {
     padding: 15px;
     background-color: #e0e0e0;
     border-radius: 5px;
+}
+
+/* Reveal Animation */
+.reveal-hint {
+    animation: revealHint 1s ease-in-out;
+}
+
+@keyframes revealHint {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive Design */
