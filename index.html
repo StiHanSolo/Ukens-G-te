@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ukens Gåte - Styrk Problemløsningsferdigheter</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="cssstyle.css">
 </head>
 <body>
     <header>
         <h1>Ukens Gåte</h1>
         <nav>
             <ul>
-                <li><a href="#hoved">Hovedside</a></li>
-                <li><a href="#hint">Hint</a></li>
-                <li><a href="#poengtavle">Poengtavle</a></li>
+                <li><a href="#hoved" aria-label="Hovedside">Hovedside</a></li>
+                <li><a href="#hint" aria-label="Hint">Hint</a></li>
+                <li><a href="#poengtavle" aria-label="Poengtavle">Poengtavle</a></li>
             </ul>
         </nav>
     </header>
@@ -22,7 +22,7 @@
         <section id="oppstart">
             <h2>Velkommen til Ukens Gåte!</h2>
             <p>Introduser deg for ukens gåte og teamarbeid! Start her.</p>
-            <button onclick="startGuidedTour()">Start Veiledning</button>
+            <button onclick="startGuidedTour()" aria-label="Start veiledning">Start Veiledning</button>
         </section>
         
         <section id="kalender">
@@ -50,6 +50,6 @@
         <p>© Ukens Gåte</p>
     </footer>
     
-    <script src="js/script.js"></script>
+    <script src="jsscript.js"></script>
 </body>
 </html>
